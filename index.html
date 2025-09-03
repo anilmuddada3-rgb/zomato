@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Food Delivery App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background-color: #f8f8f8;
+    }
+    header {
+      background-color: #ff6347;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 1rem;
+    }
+    .food-item {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin: 1rem;
+      padding: 1rem;
+      width: 250px;
+    }
+    .food-item img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .cart {
+      position: fixed;
+      right: 0;
+      top: 0;
+      width: 300px;
+      background: white;
+      border-left: 1px solid #ccc;
+      height: 100vh;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    .cart h2 {
+      margin-top: 0;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin: 0.5rem 0;
+    }
+    .total {
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Delicious Food Delivery</h1>
+  </header>
+
+  <div class="container" id="menu">
+    <!-- Food items will be injected here -->
+  </div>
+
+  <div class="cart">
+    <h2>Your Cart</h2>
+    <div id="cart-items"></div>
+    <div class="total" id="cart-total">Total: $0</div>
+  </div>
+
+  <script>
+    const foodItems = [
+      {
+        name: "Margherita Pizza",
+        price: 10.99,
+        image: "https://source.unsplash.com/250x150/?pizza"
+      },
+      {
+        name: "Cheeseburger",
+        price: 8.49,
+        image: "https://source.unsplash.com/250x150/?burger"
+      },
+      {
+        name: "Sushi Platter",
+        price: 15.99,
+        image: "https://source.unsplash.com/250x150/?sushi"
+      },
+      {
+        name: "Pasta Alfredo",
+        price: 12.00,
+        image: "https://source.unsplash.com/250x150/?pasta"
+      }
+    ];
+
+    const cart = [];
+
+    function renderMenu() {
+      const menu = document.getElementById("menu");
+      foodItems.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "food-item";
+        div.innerHTML = `
+          <img src="${item.image}" alt="${item.name}" />
+          <h3>${item.name}</h3>
+          <p>Price: $${item.price.toFixed(2)}</p>
+          <button onclick="addToCart(${index})">Add to Cart</button>
+        `;
+        menu.appendChild(div);
+      });
+    }
+
+    function addToCart(index) {
+      cart.push(foodItems[index]);
+      renderCart();
+    }
+
+    function renderCart() {
+      const cartItems = document.getElementById("cart-items");
+      const cartTotal = document.getElementById("cart-total");
+      cartItems.innerHTML = "";
+      let total = 0;
+
+      cart.forEach((item, i) => {
+        total += item.price;
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.innerHTML = `
+          <span>${item.name}</span>
+          <span>$${item.price.toFixed(2)}</span>
+        `;
+        cartItems.appendChild(div);
+      });
+
+      cartTotal.textContent = `Total: $${total.toFixed(2)}`;
+    }
+
+    // Init
+    renderMenu();
+  </script>
+</body>
+</html>
